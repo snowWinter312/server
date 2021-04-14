@@ -47,7 +47,7 @@ module.exports.rooms = async function(req, res){
 				  break; 
 				}
 				default : {
-					res.status(201).json(role);
+					res.status(201).json(_role);
 				}				
 			}			
 			con.release()
