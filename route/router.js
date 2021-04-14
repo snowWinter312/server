@@ -25,6 +25,7 @@ router.post('/delete_one', _auth.delete_one)
 // Routers - Email
 router.post('/register_email', _email.register_email)
 router.post('/forgot_email', _email.forgot_email)
+router.post('/pin_email', _email.pin_email)
 
 // Routers - Room
 router.post('/rooms', _room.rooms)
