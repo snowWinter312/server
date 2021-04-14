@@ -84,6 +84,35 @@ module.exports.register = async function(req, res){
 		
 }
 
+module.exports.confirm = async function(req, res){
+    var _user_activation_key = req.body.user_activation_key;
+		
+	globalPool.getConnection((err, con) => {
+		if (err) {
+			if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+				console.error('Database connection was closed.')
+			}
+			if (err.code === 'ER_CON_COUNT_ERROR') {
+				console.error('Database has too many connections.')
+			}
+			if (err.code === 'ECONNREFUSED') {
+				console.error('Database connection was refused.')
+			}
+		} else if (con) {
+			con.query("update users SET confirm_status=1, user_confirmed = now() WHERE user_activation_key='"+_user_activation_key+"'", function (err, result, fields) {
+				if(err){
+					res.status(401).json(err);
+				} else {
+					res.status(201).json(result);
+				}
+			  });
+			con.release()
+			return
+		}
+	})	
+	
+}
+
 module.exports.password = async function(req, res){
     
 	var _email = req.body.email;
@@ -115,8 +144,7 @@ module.exports.password = async function(req, res){
 
 module.exports.changing = async function(req, res){
     var _password = req.body.password;
-	var _id = req.body.id;
-	var _old_password = req.body.old_password;	
+	var _user_activation_key = req.body.user_activation_key;	
 		
 	globalPool.getConnection((err, con) => {
 		if (err) {
@@ -130,7 +158,7 @@ module.exports.changing = async function(req, res){
 				console.error('Database connection was refused.')
 			}
 		} else if (con) {
-			con.query("update users SET password='" + _password + "' WHERE ID='"+_id+"' and password = '"+_old_password+"'", function (err, result, fields) {
+			con.query("update users SET password='" + _password + "' WHERE user_activation_key = '"+_user_activation_key+"'", function (err, result, fields) {
 				if(err){
 					res.status(401).json(err);
 				} else {

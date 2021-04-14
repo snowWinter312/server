@@ -36,7 +36,7 @@ module.exports.rooms = async function(req, res){
 					});
 				  break; 
 				} 
-				default: { 
+				case 1:case 2: { 
 					con.query("SELECT *,DATE_FORMAT(room_created,'%Y-%m-%d %h:%i:%s') as room_created  FROM rooms", function (err, result, fields) {
 					  if(err){
 						  res.status(401).json(err);
@@ -45,7 +45,10 @@ module.exports.rooms = async function(req, res){
 					  }
 					});
 				  break; 
-				} 		      
+				}
+				default : {
+					res.status(201).json(role);
+				}				
 			}			
 			con.release()
 			return

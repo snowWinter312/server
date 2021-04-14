@@ -41,7 +41,7 @@ module.exports.conversations = function(req, res){
 					});
 				  break; 
 				} 
-				default: { 
+				case 1:case 2: { 
 					query = "select p.*,week( MAKEDATE(year(now()),1)) as first_week, week(p.post_date,1) as week, DAYOFWEEK(p.post_date) as day_of_week from posts as p Where p.room_id = '"+room_id+"' and sub_room_id ='"+sub_room_id+"' order by p.post_date asc"
 					con.query(query, function (err, result, fields) {
 					  if(err){
@@ -51,7 +51,10 @@ module.exports.conversations = function(req, res){
 					  }
 					});
 				  break; 
-				} 		      
+				} 
+				default : {
+					res.status(201).json(role);
+				}
 			}
 			con.release()
 			return
@@ -103,7 +106,7 @@ module.exports.days = function(req, res){
 					});
 				  break; 
 				} 
-				default: { 
+				case 1: case 2: { 
 					query = "select week(p.post_date,1) as week, DAYOFWEEK(p.post_date) as day_of_week, count(DAYOFWEEK(p.post_date)) as number_of_day, DAYOFWEEK(p.post_date) as temp  from posts as p Where p.room_id = '"+room_id+"' and sub_room_id ='"+sub_room_id+"' group by week(p.post_date,1),DAYOFWEEK(p.post_date) order by week(p.post_date,1),DAYOFWEEK(p.post_date)"
 					con.query(query, function (err, result, fields) {
 					  if(err){
@@ -113,7 +116,10 @@ module.exports.days = function(req, res){
 					  }
 					});
 				  break; 
-				} 		      
+				}
+				default : {
+					res.status(201).json(role);
+				}				
 			}
 			con.release()
 			return
@@ -165,7 +171,7 @@ module.exports.weeks = function(req, res){
 					});
 				  break; 
 				} 
-				default: { 
+				case 1: case 2:{ 
 					query = "select week(p.post_date,1) as week, count(post_date) as number_of_week, week(p.post_date,1) as temp from posts as p Where p.room_id = '"+room_id+"' and sub_room_id ='"+sub_room_id+"' group by week(p.post_date,1) order by week(p.post_date,1)"
 					con.query(query, function (err, result, fields) {
 					  if(err){
@@ -175,7 +181,10 @@ module.exports.weeks = function(req, res){
 					  }
 					});
 				  break; 
-				} 		      
+				} 
+				default : {
+					res.status(201).json(role);
+				}				
 			}
 			con.release()
 			return

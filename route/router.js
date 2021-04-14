@@ -11,6 +11,7 @@ var _email = require('./email_router')
 // Routers - User
 router.post('/auth', _auth.auth)
 router.post('/register', _auth.register)
+router.post('/confirm', _auth.confirm)
 router.post('/password', _auth.password)
 router.post('/changing', _auth.changing)
 router.post('/users', _auth.users)
@@ -23,6 +24,7 @@ router.post('/delete_one', _auth.delete_one)
 
 // Routers - Email
 router.post('/register_email', _email.register_email)
+router.post('/forgot_email', _email.forgot_email)
 
 // Routers - Room
 router.post('/rooms', _room.rooms)
